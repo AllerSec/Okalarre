@@ -226,19 +226,11 @@
     update();
   });
 
-  /* -------------------------------------------------- GSAP ANIMATIONS */
+  /* -------------------------------------------------- GSAP ANIMATIONS
+     Hero entrance lives in animations.css (pure CSS, starts at first paint).
+     Here we only handle scroll reveals — and anything already on screen when
+     JS boots is left visible (never hidden + re-animated → no flash). */
   onReady(function () {
-    // subpage hero titles get the same line-mask reveal as the home
-    const pageTitle = document.querySelector(".hero--page .hero__title");
-    if (pageTitle && !pageTitle.querySelector(".hero__line")) {
-      const line = document.createElement("span");
-      line.className = "hero__line";
-      const inner = document.createElement("span");
-      while (pageTitle.firstChild) inner.appendChild(pageTitle.firstChild);
-      line.appendChild(inner);
-      pageTitle.appendChild(line);
-    }
-
     if (typeof gsap === "undefined" || prefersReduced) {
       document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-in"));
       return;
@@ -248,32 +240,20 @@
     const mm = gsap.matchMedia();
 
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Hero entrance timeline (line-mask reveal when the title is split in .hero__line)
-      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      const heroLines = gsap.utils.toArray(".hero__line > span");
-      if (heroLines.length) {
-        if (document.querySelector(".hero__eyebrow")) {
-          heroTl.from(".hero__eyebrow", { autoAlpha: 0, y: 18, duration: 0.7 }, 0.05);
-        }
-        heroTl.from(heroLines, { yPercent: 115, duration: 1.05, stagger: 0.14 }, 0.15);
-      } else {
-        heroTl.from(".hero__title", { autoAlpha: 0, y: 40, duration: 1.1 }, 0.1);
-      }
-      heroTl
-        .from(".hero__sub", { autoAlpha: 0, y: 28, duration: 0.9 }, 0.55)
-        .from(".hero__cta", { autoAlpha: 0, y: 22, duration: 0.8 }, 0.75)
-        .from(".hero__scroll", { autoAlpha: 0, duration: 0.8 }, 1.0);
+      const vh = window.innerHeight;
 
-      // Generic scroll reveals
+      // Generic scroll reveals — skip elements already past their trigger point
       gsap.utils.toArray(".reveal").forEach((el) => {
+        if (el.getBoundingClientRect().top < vh * 0.86) { el.classList.add("is-in"); return; }
         gsap.fromTo(el, { autoAlpha: 0, y: 36 }, {
           autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out",
           scrollTrigger: { trigger: el, start: "top 86%", once: true },
         });
       });
 
-      // Staggered groups
+      // Staggered groups — same rule: visible groups stay untouched
       gsap.utils.toArray("[data-stagger]").forEach((group) => {
+        if (group.getBoundingClientRect().top < vh * 0.82) return;
         const kids = group.children;
         gsap.fromTo(kids, { autoAlpha: 0, y: 40 }, {
           autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.12,
