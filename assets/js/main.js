@@ -244,20 +244,20 @@
 
       // Generic scroll reveals — skip elements already past their trigger point
       gsap.utils.toArray(".reveal").forEach((el) => {
-        if (el.getBoundingClientRect().top < vh * 0.86) { el.classList.add("is-in"); return; }
+        if (el.getBoundingClientRect().top < vh * 0.78) { el.classList.add("is-in"); return; }
         gsap.fromTo(el, { autoAlpha: 0, y: 36 }, {
           autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out",
-          scrollTrigger: { trigger: el, start: "top 86%", once: true },
+          scrollTrigger: { trigger: el, start: "top 78%", once: true },
         });
       });
 
       // Staggered groups — same rule: visible groups stay untouched
       gsap.utils.toArray("[data-stagger]").forEach((group) => {
-        if (group.getBoundingClientRect().top < vh * 0.82) return;
+        if (group.getBoundingClientRect().top < vh * 0.76) return;
         const kids = group.children;
         gsap.fromTo(kids, { autoAlpha: 0, y: 40 }, {
           autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.12,
-          scrollTrigger: { trigger: group, start: "top 82%", once: true },
+          scrollTrigger: { trigger: group, start: "top 76%", once: true },
         });
       });
 
@@ -282,7 +282,7 @@
         const obj = { v: 0 };
         gsap.to(obj, {
           v: target, duration: 1.6, ease: "power1.out",
-          scrollTrigger: { trigger: el, start: "top 88%", once: true },
+          scrollTrigger: { trigger: el, start: "top 82%", once: true },
           onUpdate: () => { el.textContent = Math.round(obj.v) + (el.dataset.suffix || ""); },
         });
       });
