@@ -158,7 +158,7 @@ em { font-style: italic; }
 .eyebrow::after { content:"\2766"; /* floral heart bullet */ display:none; }
 .eyebrow.center { justify-content:center; }
 .eyebrow.center::after { content:""; width:28px; height:1px; background:var(--sage); display:inline-block; }
-.bg-forest .eyebrow,.hero .eyebrow { color: var(--sage-soft); }
+.bg-forest .eyebrow,.hero .eyebrow { color: var(--sage-soft); text-shadow: 0 1px 4px rgba(0,0,0,.55), 0 4px 20px rgba(0,0,0,.4); }
 .bg-forest .eyebrow::before,.bg-forest .eyebrow.center::after,
 .hero .eyebrow::before { background: var(--sage-soft); }
 
