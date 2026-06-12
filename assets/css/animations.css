@@ -1,0 +1,87 @@
+/* ==========================================================================
+   FINCA OKALARRE — animations.css
+   Continuous, playful SVG motion (replaces emoji icons) + decorative effects.
+   All motion is disabled under prefers-reduced-motion.
+   ========================================================================== */
+
+/* ---- animated "why" feature icons ---- */
+.ico { width: 100%; height: 100%; }
+
+/* privacy shield — checkmark draws + gentle breathe */
+.ico-privacy .check { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw-check 3.2s var(--ease) infinite; }
+.ico-privacy { animation: breathe 4s ease-in-out infinite; transform-origin: center; }
+@keyframes draw-check { 0%,15%{stroke-dashoffset:40} 40%,70%{stroke-dashoffset:0} 92%,100%{stroke-dashoffset:40} }
+
+/* clock — hands rotate slowly */
+.ico-clock .hand-m { transform-origin: 32px 32px; animation: spin 6s linear infinite; }
+.ico-clock .hand-h { transform-origin: 32px 32px; animation: spin 36s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* leaf — sway + vein draw */
+.ico-leaf { transform-origin: 50% 80%; animation: sway 4.5s ease-in-out infinite; }
+.ico-leaf .vein { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw-vein 4s var(--ease) infinite; }
+@keyframes sway { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+@keyframes draw-vein { 0%,10%{stroke-dashoffset:60} 50%,75%{stroke-dashoffset:0} 95%,100%{stroke-dashoffset:60} }
+
+/* plate — steam rises */
+.ico-plate .steam { stroke-dasharray: 14; animation: steam 2.6s ease-in-out infinite; opacity:.85; }
+@keyframes steam { 0%{stroke-dashoffset:14; opacity:0} 30%{opacity:.9} 100%{stroke-dashoffset:-14; opacity:0} }
+
+@keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+
+/* ---- leaf divider: leaves gently flutter ---- */
+.leaf-divider .leaf-l { transform-origin: 30px 24px; animation: flutter-l 5s ease-in-out infinite; }
+.leaf-divider .leaf-r { transform-origin: 76px 24px; animation: flutter-r 5s ease-in-out infinite; }
+.leaf-divider .leaf-t { transform-origin: 53px 18px; animation: flutter-t 6s ease-in-out infinite; }
+@keyframes flutter-l { 0%,100%{transform:rotate(0)} 50%{transform:rotate(-8deg)} }
+@keyframes flutter-r { 0%,100%{transform:rotate(0)} 50%{transform:rotate(8deg)} }
+@keyframes flutter-t { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-2px) scale(1.04)} }
+
+/* ---- floating ambient particles (pollen / light motes) on forest sections ---- */
+.bg-forest { position: relative; overflow: hidden; }
+.bg-forest::before, .bg-forest::after {
+  content:""; position:absolute; border-radius:50%;
+  background: radial-gradient(circle, rgba(174,186,159,.5), transparent 70%);
+  pointer-events:none; filter: blur(2px);
+}
+.bg-forest::before { width:300px; height:300px; top:-140px; right:-140px; animation: float-a 16s ease-in-out infinite; }
+.bg-forest::after  { width:240px; height:240px; bottom:-120px; left:-120px; animation: float-b 20s ease-in-out infinite; }
+@keyframes float-a { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-18px,16px)} }
+@keyframes float-b { 0%,100%{transform:translate(0,0)} 50%{transform:translate(16px,-14px)} }
+
+/* ---- subtle grain/texture overlay for atmosphere ---- */
+.hero__media::before {
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- link underline sweep for inline links in legal/body ---- */
+.stack a:not(.btn):not(.card__link) {
+  color: var(--forest); font-weight:500;
+  background-image: linear-gradient(var(--sage), var(--sage));
+  background-size: 0% 1.5px; background-position: 0 100%; background-repeat:no-repeat;
+  transition: background-size .4s var(--ease);
+}
+.stack a:not(.btn):not(.card__link):hover { background-size: 100% 1.5px; }
+
+/* ---- card media subtle ken-burns on hover handled in main.css; add shine ---- */
+.card__media::before {
+  content:""; position:absolute; top:0; left:-75%; width:50%; height:100%; z-index:2;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.25), transparent);
+  transform: skewX(-20deg); transition: left .8s var(--ease); pointer-events:none;
+}
+.card:hover .card__media::before { left:125%; }
+
+/* ---- eyebrow rule grow on reveal ---- */
+.eyebrow::before, .eyebrow.center::after { transition: width .6s var(--ease); }
+
+/* ---- reduced motion: stop everything decorative ---- */
+@media (prefers-reduced-motion: reduce) {
+  .ico-privacy,.ico-clock .hand-m,.ico-clock .hand-h,.ico-leaf,.ico-plate .steam,
+  .ico-privacy .check,.ico-leaf .vein,
+  .leaf-divider .leaf-l,.leaf-divider .leaf-r,.leaf-divider .leaf-t,
+  .bg-forest::before,.bg-forest::after,.wa-float,.hero__scroll .mouse::after,
+  .marquee__track,.pm__row {
+    animation: none !important;
+  }
+}

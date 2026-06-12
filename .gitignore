@@ -1,0 +1,7 @@
+node_modules/
+package-lock.json
+package.json
+_build/__pycache__/
+*.log
+_build/hires/
+_build/_img_urls.txt
