@@ -371,6 +371,7 @@ body.menu-open .mobile-menu { transform: translateY(0); }
 .hero__scroll .mouse { width:24px; height:38px; border:2px solid var(--cream); border-radius:14px; position:relative; }
 .hero__scroll .mouse::after { content:""; position:absolute; top:7px; left:50%; transform:translateX(-50%); width:4px; height:7px; background:var(--cream); border-radius:2px; animation: scroll-dot 1.8s var(--ease) infinite; }
 @keyframes scroll-dot { 0%{opacity:0;transform:translate(-50%,0)} 30%{opacity:1} 60%{opacity:1;transform:translate(-50%,12px)} 100%{opacity:0;transform:translate(-50%,12px)} }
+@media (max-width:640px){ .hero__scroll { display:none; } }
 
 /* ---------------------------------------------------------------- DIVIDER (animated svg leaf) */
 .leaf-divider { display:flex; align-items:center; justify-content:center; gap:1rem; color: var(--sage); margin-block: var(--sp-3); }
@@ -674,6 +675,9 @@ body.menu-open .mobile-menu { transform: translateY(0); }
   .panels { flex-direction: column; min-height:0; }
   .panel { min-height: 230px; }
   .panel__more { max-height:none; opacity:1; transform:none; overflow:visible; }
+  /* the text block is always visible and the card is short, so the scrim
+     must start higher and get darker than on the tall desktop panels */
+  .panel::after { background: linear-gradient(185deg, rgba(20,26,16,.16) 8%, rgba(20,26,16,.52) 45%, rgba(20,26,16,.88) 100%); }
 }
 
 /* ---------------------------------------------------------------- BENTO (why okalarre) */
